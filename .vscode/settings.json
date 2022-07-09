@@ -1,0 +1,10 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/mnt/d/lidar/catkin_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/mnt/d/lidar/catkin_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
+}

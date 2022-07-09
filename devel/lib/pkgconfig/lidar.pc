@@ -1,0 +1,8 @@
+prefix=/mnt/d/lidar/catkin_ws/devel
+
+Name: lidar
+Description: Description of lidar
+Version: 0.0.0
+Cflags: -I/mnt/d/lidar/catkin_ws/devel/include -I/mnt/d/lidar/catkin_ws/src/lidar/include
+Libs: -L${prefix}/lib -llidar
+Requires: roscpp rospy std_msgs message_runtime

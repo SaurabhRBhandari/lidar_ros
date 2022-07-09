@@ -1,0 +1,2 @@
+lidar
+-DCATKIN_DEVEL_PREFIX=/mnt/d/lidar/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/mnt/d/lidar/catkin_ws/install -G Unix Makefiles
