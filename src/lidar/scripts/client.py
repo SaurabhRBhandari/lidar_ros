@@ -61,19 +61,52 @@ def lidar_client(x, y):
 map = PIL.Image.new(mode="1", size=(400,400))
 
 def usage():
-    return "%s [x y]"%sys.argv[0]
+    return "%s [x y z]"%sys.argv[0]
+
+def planner(intX,intY,n):
+    x=intX
+    y=intY
+    for i in range(0,n):
+        print(x,y)
+        lid_scan=lidar_client(x,y)
+        plot_reading_on_map(x,y,lid_scan,map)
+        max=0
+        for i, reading in enumerate(lid_scan):
+            if i+1<len(lid_scan):
+                i0 = reading[0]
+                r0 = reading[1]
+
+                i1 = lid_scan[i+1][0]
+                r1 = lid_scan[i+1][1]
+                
+                if(abs(r1-r0)>max):
+                    max=abs(r1-r0)
+                    i00=i0
+                    r00=r0
+                    r11=r1
+                    i11=i1
+        r=(r00+r11)/2
+        if(r00>r11): i=i00
+        else: i=i11
+        x = int(r*math.cos(i*math.pi/180))+x
+        y = int(r*math.sin(i*math.pi/180))+y
+            
+    
+    # plot_reading_on_map(0,320,lidar_client(0,320),map)
+    # plot_reading_on_map(200,0,lidar_client(200,0),map)
+    # plot_reading_on_map(200,280,lidar_client(200,280),map)
+    # plot_reading_on_map(280,260,lidar_client(280,260),map)
+
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3:
+    if len(sys.argv) == 4:
         x = int(sys.argv[1])
         y = int(sys.argv[2])
+        z=int(sys.argv[3])
     else:
         print(usage())
-    plot_reading_on_map(80,140,lidar_client(80,140),map)
-    plot_reading_on_map(0,320,lidar_client(0,320),map)
-    plot_reading_on_map(200,0,lidar_client(200,0),map)
-    plot_reading_on_map(200,280,lidar_client(200,280),map)
-    plot_reading_on_map(280,260,lidar_client(280,260),map)
+    # {x=0 y=320 z=4 works good enough}
+    planner(x,y,z)
     map.save("map.jpg")
     
     
