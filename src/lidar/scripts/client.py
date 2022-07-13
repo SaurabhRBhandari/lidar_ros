@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from copy import deepcopy
 from numpy import append
 from lidar.srv import lidar,lidarResponse
 import sys
@@ -63,12 +64,15 @@ map = PIL.Image.new(mode="1", size=(400,400))
 def usage():
     return "%s [x y z]"%sys.argv[0]
 
-def planner(intX,intY,n):
+def planner(intX,intY):
     x=intX
     y=intY
-    for i in range(0,n):
+    while True:
         print(x,y)
         lid_scan=lidar_client(x,y)
+        temp = deepcopy(map)
+        plot_reading_on_map(x,y,lid_scan,temp)
+        if(temp==map): break
         plot_reading_on_map(x,y,lid_scan,map)
         max=0
         for i, reading in enumerate(lid_scan):
@@ -78,14 +82,13 @@ def planner(intX,intY,n):
 
                 i1 = lid_scan[i+1][0]
                 r1 = lid_scan[i+1][1]
-                
                 if(abs(r1-r0)>max):
                     max=abs(r1-r0)
                     i00=i0
                     r00=r0
                     r11=r1
                     i11=i1
-        r=(r00+r11)/2
+        r=(r00+r11)/2.0
         if(r00>r11): i=i00
         else: i=i11
         x = int(r*math.cos(i*math.pi/180))+x
@@ -99,14 +102,12 @@ def planner(intX,intY,n):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 4:
+    if len(sys.argv) == 3:
         x = int(sys.argv[1])
         y = int(sys.argv[2])
-        z=int(sys.argv[3])
     else:
         print(usage())
-    # {x=0 y=320 z=4 works good enough}
-    planner(x,y,z)
+    planner(x,y)
     map.save("map.jpg")
     
     
